@@ -1,0 +1,2 @@
+# Preserva os bytes dos CSVs originais no repositório.
+dados/originais/*.csv -text

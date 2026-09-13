@@ -1,0 +1,6 @@
+linhas_execucao: 31740
+linhas_programas_acoes: 768
+linhas_base_final: 31740
+linhas_com_acao: 31739
+linhas_sem_acao: 1
+linhas_com_chave_empenho_repetida: 232

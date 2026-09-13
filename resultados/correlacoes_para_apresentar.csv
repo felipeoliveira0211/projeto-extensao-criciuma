@@ -1,0 +1,11 @@
+﻿rodada,variavel,categoria,n,pearson,spearman,acima_0_3,grupo
+1,valorLiquidadoEmpenho,,31160,0.9139640028925584,0.8834986429002042,True,"Acima de 0,3"
+1,valorPagoEmpenho,,31160,0.9138455448026412,0.8821066129399224,True,"Acima de 0,3"
+1,ValorAnuladoEmpenho,,31160,0.5608875481513271,0.3016649549557177,True,"Acima de 0,3"
+1,saldoAPagarLiquidado,,31160,0.30520087287174463,0.22045670345619123,True,"Acima de 0,3"
+1,valorPagoRestosEmpenho,,31160,0.30514629214649847,0.21302941794856933,True,"Acima de 0,3"
+1,possui_contrato,,31740,0.11783732396362952,0.35741615378850955,False,"Abaixo de 0,3"
+2,grupoElemento_top1,OUTRAS DESPESAS CORRENTES,31740,-0.09460427947083941,-0.3460983802274677,False,"Abaixo de 0,3"
+2,descricaoFuncao_top3,Educação,31740,0.08635730581348645,0.14787532058180783,False,"Abaixo de 0,3"
+1,orcado_atualizado_acao,,31739,0.07999919215507369,-0.10962981004376272,False,"Abaixo de 0,3"
+1,mes,,31740,-0.06403163932701297,-0.0813744767626922,False,"Abaixo de 0,3"
