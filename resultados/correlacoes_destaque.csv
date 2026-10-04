@@ -1,0 +1,17 @@
+﻿variavel,descricao,n,spearman,pearson,estavel_sem_uma_area
+n_empenhos,Número de empenhos,28,0.95497469075497,0.747297496282625,True
+n_credores,Número de credores,28,0.9327675744966207,0.7850037471677236,True
+dotacao_inicial,Dotação inicial,28,0.9299206480377163,0.9698718314813586,True
+n_acoes,Número de ações,28,0.9206010827151307,0.804264395152663,True
+n_liquidacoes,Número de liquidações,28,0.9157088122605364,0.7799180535104221,True
+n_fontes_orcamentarias,Número de fontes orçamentárias,28,0.9018995891544236,0.7853028936847574,True
+n_recursos_empenhos,Diversidade de recursos dos empenhos,28,0.896521102761117,0.7620714889453036,True
+n_suplementacoes,Número de suplementações,28,0.8950034977873894,0.8185456402057317,True
+n_dotacoes,Número de dotações,28,0.8948609136983371,0.8004152669376944,True
+n_subfuncoes,Número de subfunções,28,0.8768332991283556,0.8940375131662148,True
+n_unidades,Número de unidades,28,0.8240917074717513,0.6526874733888947,True
+hhi_orcamento_acoes,Concentração do orçamento entre ações,28,-0.8036402106631846,-0.6461211055428464,True
+n_programas,Número de programas,28,0.7792891493748301,0.7036292261779632,True
+n_naturezas,Diversidade de naturezas,28,0.5935062244349613,0.6631028012100105,True
+perc_empenhos_ordinarios,Proporção de empenhos ordinários,28,-0.44382845525454634,-0.08131256873977384,True
+perc_orcamento_pessoal,Proporção inicial de pessoal,28,0.31401869836103435,0.21815289190781145,False

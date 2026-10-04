@@ -101,6 +101,25 @@ def analisar(projeto):
     descritiva["assimetria"] = base[[ALVO] + variaveis].skew()
     salvar(descritiva.reset_index(names="variavel"), saida, "descritiva.csv")
 
+    # 4B. BOXPLOT E OUTLIERS: comparar as áreas dentro de cada ano.
+    # IQR = Q3 - Q1. Usamos a regra de Tukey, sem remover pontos da base.
+    limites, marcados = [], []
+    for ano, grupo in base.groupby("ano"):
+        q1, q3 = grupo[ALVO].quantile([0.25, 0.75])
+        iqr = q3 - q1
+        inferior, superior = q1 - 1.5 * iqr, q3 + 1.5 * iqr
+        fora = (grupo[ALVO] < inferior) | (grupo[ALVO] > superior)
+        limites.append({"ano": ano, "n": len(grupo), "q1": q1, "q3": q3,
+                        "iqr": iqr, "limite_inferior": inferior,
+                        "limite_superior": superior, "n_outliers": int(fora.sum())})
+        pontos = grupo.loc[fora, ["ano", "area", ALVO, "liquidado_area"]].copy()
+        pontos["tipo"] = pontos[ALVO].map(lambda x: "inferior" if x < inferior else "superior")
+        marcados.append(pontos)
+    limites = pd.DataFrame(limites)
+    outliers = pd.concat(marcados, ignore_index=True)
+    salvar(limites, saida, "limites_outliers.csv")
+    salvar(outliers, saida, "outliers.csv")
+
     # 5. SHAPIRO–WILK: H0 = distribuição normal; alfa = 0,05.
     normalidade = []
     for coluna in [ALVO] + variaveis:
@@ -138,6 +157,13 @@ def analisar(projeto):
         resultados.append(linha)
     correlacoes = pd.DataFrame(resultados)
     salvar(correlacoes, saida, "correlacoes.csv")
+    destaque = correlacoes.loc[correlacoes.supera_03_spearman].merge(
+        dicionario[["variavel", "descricao"]], on="variavel", validate="one_to_one")
+    destaque["estavel_sem_uma_area"] = ((destaque.rho_min_sem_area > 0.3)
+                                      | (destaque.rho_max_sem_area < -0.3))
+    destaque = destaque.sort_values("spearman", key=lambda x: x.abs(), ascending=False)
+    salvar(destaque[["variavel", "descricao", "n", "spearman", "pearson",
+                    "estavel_sem_uma_area"]], saida, "correlacoes_destaque.csv")
 
     # 7. VISUALIZAR: histograma e Q-Q da resposta; comparação das mesmas áreas.
     plt.rcParams.update({"font.size": 10})
@@ -159,11 +185,66 @@ def analisar(projeto):
     fig.savefig(saida / "distribuicao.png", dpi=160)
     plt.close(fig)
 
+    # Boxplot: caixa = Q1 a Q3; linha = mediana; círculos = pontos além dos limites.
+    anos = sorted(base.ano.unique())
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.boxplot([base.loc[base.ano == ano, ALVO] * 100 for ano in anos], widths=0.4)
+    ax.set_xticks(range(1, len(anos) + 1), [str(ano) for ano in anos])
+    for ponto in outliers.itertuples():
+        x = anos.index(ponto.ano) + 1
+        ax.annotate(ponto.area, (x, getattr(ponto, ALVO) * 100),
+                    xytext=(14, 0), textcoords="offset points", va="center", fontsize=9)
+    ax.set(title="Boxplot da participação liquidada por ano",
+           xlabel="Ano · 14 áreas comparáveis em cada ano",
+           ylabel="Participação na despesa liquidada (%)")
+    ax.grid(axis="y", alpha=0.2)
+    fig.tight_layout()
+    fig.savefig(saida / "boxplot.png", dpi=160)
+    plt.close(fig)
+
+    # Todas as 25 variáveis no gráfico, para não esconder as correlações pequenas.
+    grafico = correlacoes.merge(dicionario[["variavel", "descricao"]], on="variavel")
+    grafico = grafico.sort_values("spearman")
+    cores = ["#b55b19" if r < -0.3 else "#17658a" if r > 0.3 else "#9aa4ae"
+             for r in grafico.spearman]
+    fig, ax = plt.subplots(figsize=(12, 10))
+    ax.barh(grafico.descricao, grafico.spearman, color=cores)
+    ax.axvline(-0.3, color="#555555", linestyle="--", linewidth=1)
+    ax.axvline(0.3, color="#555555", linestyle="--", linewidth=1)
+    ax.axvline(0, color="#aaaaaa", linewidth=0.6)
+    for i, r in enumerate(grafico.spearman):
+        ax.text(r + (0.02 if r >= 0 else -0.02), i, f"{r:.3f}", va="center",
+                ha="left" if r >= 0 else "right", fontsize=8)
+    ax.set(xlim=(-1.1, 1.1), title="25 variáveis e sua associação com a participação liquidada",
+           xlabel="Spearman ρ · tracejados: −0,3 e +0,3 · cinza: não atinge o limite")
+    fig.tight_layout()
+    fig.savefig(saida / "correlacoes.png", dpi=160)
+    plt.close(fig)
+
     # 8. CONCLUSÃO: responder à pergunta sem confundir correlação com causa.
     n_spearman = int(correlacoes.supera_03_spearman.sum())
     n_pearson = int((correlacoes.pearson.abs() > 0.3).sum())
     sw = normalidade.iloc[0]
+    tabela_destaque = ["| Variável | Spearman ρ | Estável ao retirar uma área |",
+                       "|---|---:|:---:|"]
+    for item in destaque.itertuples():
+        coeficiente = f"{item.spearman:.3f}".replace(".", ",")
+        tabela_destaque.append(f"| {item.descricao} | {coeficiente} | {'Sim' if item.estavel_sem_uma_area else 'Não'} |")
+    tabela_outliers = ["| Ano | Área | Participação | Tipo |", "|---:|---|---:|---|"]
+    for item in outliers.itertuples():
+        percentual = f"{getattr(item, ALVO) * 100:.2f}%".replace(".", ",")
+        tabela_outliers.append(f"| {item.ano} | {item.area} | {percentual} | {item.tipo} |")
     resumo = f"""# Conclusão do estudo
+
+A análise dos dados de 2024 e 2025 mostrou que os maiores valores ficaram em Educação, Saúde, Administração e Urbanismo. Também apareceram mudanças importantes, como o aumento em Assistência Social e a redução em Urbanismo. Isso mostra que a distribuição mudou entre os anos, mas os números sozinhos não explicam se essas mudanças acompanharam as necessidades da população.
+
+Entre as 25 variáveis estudadas, 16 atingiram o limite de correlação definido em Spearman. As relações mais fortes envolveram orçamento, ações, empenhos e credores, mostrando que áreas com maior participação nos recursos também costumam ter uma estrutura de execução maior. O boxplot destacou Educação nos dois anos pelo valor elevado em relação às demais áreas. Esse destaque não significa erro ou gasto excessivo.
+
+Para o planejamento futuro, a Prefeitura pode usar esses resultados para acompanhar mudanças na distribuição, comparar o orçamento com a execução e investigar aumentos ou reduções mais expressivos. O próximo passo é cruzar os gastos com informações como atendimentos, matrículas, filas e metas. Assim, a análise ajuda a decidir com mais informação, sem concluir que uma área precisa de mais ou menos recursos apenas pelo valor que recebeu.
+
+Essas conclusões se limitam às bases disponíveis. A comparação estatística utilizou 14 áreas presentes nos dois anos, com valores nominais e algumas limitações de cadastro documentadas no estudo.
+
+## Evidências da análise
 
 Pergunta: como os recursos da Prefeitura de Criciúma foram distribuídos entre as áreas em 2024 e 2025, e como a análise estatística pode ajudar a planejar melhor essa distribuição?
 
@@ -173,13 +254,39 @@ Educação, Saúde, Administração e Urbanismo apresentam os maiores valores na
 
 A base de correlações tem {base.area.nunique()} áreas em dois anos, totalizando {len(base)} observações. A variável principal é a participação de cada área na despesa liquidada das áreas comparáveis no mesmo ano. Das 25 variáveis candidatas, **{n_spearman} superam 0,3 em módulo em Spearman**. Em Pearson, são {n_pearson}. Não foram excluídas variáveis para elevar essa contagem.
 
+## Quais variáveis atingiram o limite?
+
+Foram **{n_spearman}**, e não apenas 15. Todas estão abaixo. A estabilidade significa que a relação permanece além de ±0,3 ao retirar uma área inteira, com seus dois anos. Isso não é teste de causalidade nem de significância.
+
+{chr(10).join(tabela_destaque)}
+
+A proporção inicial de pessoal atinge o limite no painel completo, mas não em todas as remoções de área. As outras 15 relações são estáveis nesse diagnóstico. A lista inclui todas as 16; nenhuma foi escondida para ajustar o resultado à meta.
+
+![As 25 correlações e os limites solicitados](correlacoes.png)
+
+## Boxplot e outliers
+
+Aplicamos Tukey à variável principal **separadamente em cada ano**, comparando as 14 áreas. Q1 e Q3 usam o cálculo padrão de quantis do pandas, com interpolação linear. Um valor é marcado quando fica abaixo de Q1 − 1,5 × IQR ou acima de Q3 + 1,5 × IQR. Foram identificadas **{len(outliers)} observações área × ano**:
+
+{chr(10).join(tabela_outliers)}
+
+![Boxplot da participação liquidada em cada ano](boxplot.png)
+
+Os quartis e limites exatos estão em `limites_outliers.csv`, e os registros em `outliers.csv`. As participações são armazenadas entre 0 e 1 nos CSVs e mostradas em porcentagem nos gráficos. Os bigodes terminam nas observações extremas ainda dentro dos limites, não necessariamente sobre as cercas teóricas de Tukey.
+
+**Nenhuma observação foi retirada.** Valores altos podem refletir a escala de políticas como Educação e Saúde. Não são, por si, erro, desperdício ou irregularidade. A classificação compara áreas diferentes; não estabelece quanto cada uma deveria receber. Este diagnóstico trata de áreas e anos, não de contratos ou empenhos individuais. No mesmo ano, valor liquidado e participação diferem por um denominador comum, portanto produziriam os mesmos pontos de Tukey, não duas evidências independentes.
+
 ## Normalidade
+
+![Histograma e Q-Q da variável principal](normalidade.png)
 
 Para a variável principal, Shapiro–Wilk resultou em W = {sw.W:.6f} e p = {sw.p_valor:.6g}. Com alfa de 5%: **{sw.leitura_5pct.lower()}**. O teste das 26 variáveis está em `shapiro_wilk.csv`; a inspeção visual está em `normalidade.png`.
 
 O teste é um diagnóstico exploratório. Contagens são discretas, participações são limitadas e a mesma área aparece em dois anos. As observações não são completamente independentes. Não rejeitar H0 não prova normalidade, e rejeitá-la não torna Pearson automaticamente inválido. Spearman foi priorizado para descrever associações monotônicas entre áreas de escalas diferentes; não apenas por um resultado de Shapiro–Wilk.
 
 ## Uso no planejamento
+
+![Distribuição dos valores entre as áreas](distribuicao.png)
 
 A comparação permite identificar onde o gasto se concentra, acompanhar alterações de prioridade relativa e confrontar a distribuição com a estrutura dos programas e o volume administrativo. O aumento de Assistência Social e a queda de Urbanismo merecem avaliação de ações, reorganização administrativa e demanda antes de orientar novas decisões.
 

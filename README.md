@@ -79,6 +79,14 @@ As transformações são contagens, somas, proporções, mediana, diferença de 
 
 Observe quantidade de dados, média, mediana, desvio padrão, quartis, mínimo, máximo e assimetria em `resultados/descritiva.csv`. Compare a média e a mediana e examine o histograma da variável resposta.
 
+### Boxplot e identificação de outliers
+
+O boxplot compara as participações das 14 áreas dentro de cada ano. A caixa vai de Q1 a Q3, a linha interna marca a mediana e os pontos externos aos bigodes indicam valores além dos limites de Tukey: Q1 − 1,5 × IQR e Q3 + 1,5 × IQR. Os quartis usam interpolação linear, padrão do pandas. Os bigodes chegam aos valores extremos ainda dentro dessas cercas.
+
+Os limites são calculados por ano. `resultados/limites_outliers.csv` mostra Q1, Q3, IQR e os limites; `resultados/outliers.csv` identifica ano, área e valor. Educação foi marcada como outlier superior em 2024 e 2025. São duas observações da mesma área. Nenhuma foi removida dos testes. Áreas têm escalas e necessidades diferentes, portanto esse destaque não comprova gasto excessivo ou irregularidade.
+
+![Boxplot gerado pelo Python](resultados/boxplot.png)
+
 ## 6. Verificar a normalidade com Shapiro–Wilk
 
 O teste é aplicado separadamente a **Y e às 25 variáveis X**. Não se testa “o banco inteiro” como se ele tivesse uma única distribuição.
@@ -93,6 +101,8 @@ Veja W, p e a interpretação em `resultados/shapiro_wilk.csv`. O histograma e o
 
 Contagens são discretas e participações têm limites. Além disso, uma área aparece em dois anos. Assim, os valores-p servem como diagnóstico exploratório, não como comprovação de pressupostos de independência. Não fazemos 26 decisões confirmatórias independentes a partir desses testes.
 
+![Histograma e gráfico Q-Q gerados pelo Python](resultados/normalidade.png)
+
 ## 7. Analisar as correlações
 
 O coeficiente principal é **Spearman**, que descreve associação monotônica por ordenação. Também mostramos **Pearson**, que descreve associação linear. O Shapiro–Wilk auxilia a interpretação; sozinho, não obriga a usar Spearman nem torna Pearson inválido.
@@ -101,11 +111,21 @@ O critério solicitado é estrito: **ρ < −0,3 ou ρ > +0,3**. A tabela manté
 
 A mesma tabela inclui Spearman em cada ano e uma sensibilidade simples: retirar uma área com seus dois registros e recalcular. Essa verificação ajuda a identificar dependência de uma única área. Correlação não demonstra causalidade, eficiência ou necessidade de financiamento.
 
+### Quais variáveis atingiram o limite?
+
+Foram **16 variáveis em Spearman**, não apenas 15. A [lista destacada](resultados/correlacoes_destaque.csv) mostra os nomes, coeficientes e a estabilidade ao retirar uma área. A [conclusão](resultados/CONCLUSAO.md) contém a mesma lista em tabela legível. Quinze relações permanecem além do limite em todas as retiradas avaliadas; a proporção inicial de pessoal é a relação mais sensível entre as 16 selecionadas pelo critério.
+
+O gráfico abaixo apresenta todas as 25, inclusive as nove que não atingiram o limite. Tracejados marcam −0,3 e +0,3; azul indica associação positiva além do limite, laranja indica negativa e cinza indica que o limite não foi atingido.
+
+![Correlações geradas pelo Python](resultados/correlacoes.png)
+
 ## 8. Responder à pergunta e apoiar o planejamento
 
 Consulte `resultados/CONCLUSAO.md`. Use o gráfico de distribuição e a tabela de todas as áreas para explicar os montantes e as mudanças entre anos. Para sugerir uma distribuição melhor, relacione esses achados a demanda, atendimento e metas; tais indicadores ainda não estão incluídos neste estudo.
 
 Os valores são nominais, sem correção pela inflação. Há diferenças entre os retratos das duas fontes e não foi realizada conciliação final com o balanço oficial. O estudo não deve ser apresentado como fechamento contábil auditado de todo o Município.
+
+![Distribuição por área gerada pelo Python](resultados/distribuicao.png)
 
 ## Executar
 
@@ -146,6 +166,11 @@ projeto_final/
     ├── descritiva.csv
     ├── shapiro_wilk.csv
     ├── correlacoes.csv
+    ├── correlacoes_destaque.csv
+    ├── correlacoes.png
+    ├── limites_outliers.csv
+    ├── outliers.csv
+    ├── boxplot.png
     ├── normalidade.png
     ├── distribuicao.png
     └── CONCLUSAO.md
