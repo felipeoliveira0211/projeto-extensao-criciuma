@@ -236,13 +236,43 @@ def analisar(projeto):
         tabela_outliers.append(f"| {item.ano} | {item.area} | {percentual} | {item.tipo} |")
     resumo = f"""# Conclusão do estudo
 
-A análise dos dados de 2024 e 2025 mostrou que os maiores valores ficaram em Educação, Saúde, Administração e Urbanismo. Também apareceram mudanças importantes, como o aumento em Assistência Social e a redução em Urbanismo. Isso mostra que a distribuição mudou entre os anos, mas os números sozinhos não explicam se essas mudanças acompanharam as necessidades da população.
+A análise mostrou mudanças importantes na distribuição dos recursos de Criciúma entre 2024 e 2025. Nas bases estudadas, Assistência Social passou de R$ 12,37 milhões para R$ 48,53 milhões, um aumento nominal de 292,25%, enquanto Urbanismo apresentou redução de 6,22%. Educação e Saúde cresceram em valores, mas perderam participação no total das 14 áreas comparáveis. Isso mostra por que é importante observar tanto os valores quanto os percentuais.
 
-Entre as 25 variáveis estudadas, 16 atingiram o limite de correlação definido em Spearman. As relações mais fortes envolveram orçamento, ações, empenhos e credores, mostrando que áreas com maior participação nos recursos também costumam ter uma estrutura de execução maior. O boxplot destacou Educação nos dois anos pelo valor elevado em relação às demais áreas. Esse destaque não significa erro ou gasto excessivo.
+A importância desse acompanhamento encontra apoio em pesquisas. O Ipea identificou riscos de perda de financiamento na disputa entre saúde e educação [1], enquanto o estudo de Barreto e colaboradores mostrou que melhorias no saneamento podem beneficiar a saúde infantil [2]. Essas evidências reforçam a necessidade de planejar as áreas em conjunto, considerando suas necessidades e os efeitos que produzem umas sobre as outras.
 
-Para o planejamento futuro, a Prefeitura pode usar esses resultados para acompanhar mudanças na distribuição, comparar o orçamento com a execução e investigar aumentos ou reduções mais expressivos. O próximo passo é cruzar os gastos com informações como atendimentos, matrículas, filas e metas. Assim, a análise ajuda a decidir com mais informação, sem concluir que uma área precisa de mais ou menos recursos apenas pelo valor que recebeu.
+Para Criciúma, os resultados apontam prioridades concretas de investigação: verificar quais programas explicam o crescimento da Assistência Social, quais obras ou serviços estão associados à redução em Urbanismo e se essas mudanças acompanharam a demanda da população. O acompanhamento futuro pode comparar despesas com famílias atendidas, obras concluídas, matrículas e filas de atendimento.
 
-Essas conclusões se limitam às bases disponíveis. A comparação estatística utilizou 14 áreas presentes nos dois anos, com valores nominais e algumas limitações de cadastro documentadas no estudo.
+Assim, a contribuição do estudo é identificar mudanças que precisam de explicação e orientar o acompanhamento dos serviços. As {n_spearman} correlações encontradas ajudam a descrever a distribuição, mas não comprovam eficiência. Com dois anos de dados e sem indicadores de resultados dos serviços, ainda não é possível afirmar que houve excesso de recursos em uma área ou abandono de outra.
+
+## Comparativos que apoiam a conclusão
+
+| Área | Liquidado em 2024 | Liquidado em 2025 | Variação nominal |
+|---|---:|---:|---:|
+| Educação | R$ 361,50 milhões | R$ 383,41 milhões | +6,06% |
+| Saúde | R$ 279,42 milhões | R$ 293,55 milhões | +5,06% |
+| Administração | R$ 217,26 milhões | R$ 228,48 milhões | +5,17% |
+| Urbanismo | R$ 163,63 milhões | R$ 153,45 milhões | −6,22% |
+| Assistência Social | R$ 12,37 milhões | R$ 48,53 milhões | +292,25% |
+
+Fonte: `base_analitica.csv`, nas bases recebidas para 2024 e 2025. Variação = (valor de 2025 / valor de 2024 − 1) × 100, calculada antes do arredondamento. Valores nominais, sem correção pela inflação; não representam uma conciliação com o balanço oficial.
+
+Educação recebeu mais em reais, mas sua participação no total das 14 áreas comparáveis caiu de **32,75% para 32,09%**. Portanto, perder participação não significa necessariamente sofrer um corte. Assistência Social teve aumento de aproximadamente **R$ 36,16 milhões**, enquanto Urbanismo apresentou redução de **R$ 10,18 milhões**. Os dados não demonstram que o dinheiro de uma área foi transferido para a outra.
+
+## Estudos que fundamentam o objetivo
+
+**[1] Disputa por recursos entre áreas.** Vieira e colaboradores (Ipea, 2020) analisaram 5.480 municípios e identificaram, em um cenário de unificação dos pisos de saúde e educação, 951 municípios com maior risco de redução dos recursos da educação e 97 com maior risco na saúde. O estudo sustenta a preocupação com a concorrência por recursos. São riscos naquele cenário, não cortes observados nem um diagnóstico de Criciúma. Os percentuais de aplicação utilizados no estudo têm bases de cálculo diferentes da participação liquidada deste projeto.
+
+Referência: VIEIRA, Fabiola Sulpino; SERVO, Luciana Mendes Santos; BENEVIDES, Rodrigo Pucci de Sá e; PIOLA, Sérgio Francisco; ORAIR, Rodrigo Octávio. *Gastos em saúde e educação no Brasil: impactos da unificação dos pisos constitucionais*. Ipea, Texto para Discussão 2596, 2020. [Acesso ao estudo](https://repositorio.ipea.gov.br/entities/publication/a587d79e-bb94-4a84-a958-4b68d381d62e).
+
+**[2] Benefícios entre áreas.** Barreto e colaboradores (2007) avaliaram um programa de saneamento em Salvador, acompanhando 841 crianças antes e 1.007 depois da intervenção. Após ajustes estatísticos, estimaram redução de 22% na prevalência de diarreia infantil. O resultado apoia o planejamento conjunto de saneamento e saúde. Esse percentual não pode ser aplicado diretamente a Criciúma, e a pesquisa não demonstra que a distribuição local esteja inadequada.
+
+Referência: BARRETO, Mauricio L. et al. *Effect of city-wide sanitation programme on reduction in rate of childhood diarrhoea in northeast Brazil: assessment by two cohort studies*. The Lancet, v. 370, p. 1622–1628, 2007. [Acesso à pesquisa](https://pubmed.ncbi.nlm.nih.gov/17993362/).
+
+**[3] Planejamento apoiado em resultados.** O relatório da OCDE de 2025, com levantamento de 2023, informa que 28 dos 33 países respondentes (85%) utilizavam alguma forma de orçamento orientado por desempenho. Desses 28, 20 usavam informações de desempenho para orientar a distribuição anual dos recursos. O levantamento trata de governos centrais e mostra adoção da prática, não um percentual de melhoria da eficiência. Ele apoia a proposta de combinar despesas com indicadores dos serviços.
+
+Referência: OECD. *Government at a Glance 2025*, seção 9.2, Performance budgeting. 2025. [Acesso ao relatório](https://www.oecd.org/en/publications/2025/06/government-at-a-glance-2025_70e14c6c/full-report/performance-budgeting_eb0a21ea.html).
+
+As referências fundamentam a importância do acompanhamento, mas não definem uma divisão ideal do orçamento de Criciúma. Uma área receber mais recursos pode ser justificável por sua demanda, pelos custos dos serviços e pelas obrigações de financiamento.
 
 ## Evidências da análise
 

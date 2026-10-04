@@ -183,3 +183,7 @@ Os dados e resultados anteriores foram preservados fora desta pasta. Eles não s
 A reconstrução foi executada diretamente dos arquivos originais. A execução comum também foi testada. As 25 variáveis e os coeficientes coincidiram com a análise anterior, e os arquivos originais permaneceram inalterados.
 
 Resultado reproduzido: **16 variáveis com |ρ| > 0,3 em Spearman e 14 com |r| > 0,3 em Pearson**. Para Y, Shapiro–Wilk: **W = 0,692839 e p = 0,00000226072**, rejeitando normalidade a 5% no diagnóstico exploratório. O banco tem oito tabelas, com integridade e chaves estrangeiras verificadas. A pasta final ocupa aproximadamente 5,3 MB, sem dependências instaladas.
+
+## Conclusão e fundamentação
+
+A [conclusão do estudo](resultados/CONCLUSAO.md) reúne os comparativos de 2024 e 2025, aplicações para o planejamento e referências do Ipea, da pesquisa de Barreto e colaboradores e da OCDE. Ela distingue os resultados de Criciúma das evidências externas e preserva as limitações da análise. O texto é gerado por `analise.py` ao executar o projeto.
