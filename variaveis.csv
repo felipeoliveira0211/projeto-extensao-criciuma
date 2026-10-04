@@ -1,0 +1,26 @@
+﻿variavel,descricao,definicao,origem
+dotacao_inicial,Dotação inicial,Soma do orçamento inicial; reais.,Orçamento
+n_dotacoes,Número de dotações,"Dotações distintas por entidade, ano e código.",Orçamento
+n_programas,Número de programas,Pares entidade/descrição de programa distintos dentro da área-ano.,Orçamento
+n_acoes,Número de ações,Pares entidade/código de ação distintos dentro da área-ano.,Orçamento
+n_unidades,Número de unidades,Pares entidade/unidade distintos.,Orçamento
+n_subfuncoes,Número de subfunções,Descrições de subfunção distintas.,Orçamento
+n_entidades,Número de entidades,Entidades distintas.,Orçamento
+n_naturezas,Diversidade de naturezas,Códigos de natureza distintos.,Orçamento
+hhi_orcamento_acoes,Concentração do orçamento entre ações,Soma dos quadrados das participações das ações no orçamento inicial.,Orçamento
+perc_orcamento_pessoal,Proporção inicial de pessoal,Dotação inicial com natureza 31 sobre dotação inicial total.,Orçamento
+perc_orcamento_capital,Proporção inicial de capital,Dotação inicial com natureza 4 sobre dotação inicial total.,Orçamento
+perc_orcamento_transferencias,Proporção inicial de transferências,"Modalidades 20,30,40,50,60,70,71,72 sobre dotação inicial total; agrupamento operacional.",Orçamento
+n_fontes_orcamentarias,Número de fontes orçamentárias,Recursos distintos nos anexos de fontes.,Anexos fontesRecursos
+n_suplementacoes,Número de suplementações,"Número de linhas nos anexos por dotação; somente contagens concordantes entre versões, sem deduplicar eventos iguais dentro de um arquivo.",Anexos suplementacoes
+taxa_alteracao_orcamento,Alteração relativa do orçamento,(Atualizado-inicial)/inicial; ausente se atualizado divergente ou inicial zero.,Orçamento
+n_empenhos,Número de empenhos,Identidades distintas entidade-ano-número.,Execução
+n_credores,Número de credores,Identificadores documentais; documentos mascarados combinados ao nome e pseudonimizados.,Anexos credor
+n_recursos_empenhos,Diversidade de recursos dos empenhos,"Recursos identificados por descrição, tipo e finalidade.",Execução
+n_liquidacoes,Número de liquidações,Identidades empenho+número com data dentro do exercício.,Anexos liquidacoes
+mediana_valor_empenho,Mediana do valor inicial do empenho,Mediana de valorEmpenho; reais.,Execução
+perc_empenhos_folha,Proporção de empenhos de folha,Quantidade com categoria FOLHA / quantidade total.,Execução
+perc_empenhos_processo,Proporção de empenhos de processo,Quantidade com categoria PROCESSO / quantidade total.,Execução
+perc_empenhos_ordinarios,Proporção de empenhos ordinários,Quantidade tipo ORDINARIO / quantidade total; conferir códigos observados.,Execução
+prazo_liquidacao_mediano,Prazo mediano até liquidação,Dias da data de empenho à liquidação; apenas datas no exercício e intervalo não negativo.,Execução e liquidações
+perc_empenhos_ultimo_trimestre,Proporção de empenhos no quarto trimestre,Quantidade de empenhos de outubro a dezembro / total do ano.,Execução

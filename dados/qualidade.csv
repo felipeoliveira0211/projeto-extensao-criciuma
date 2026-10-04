@@ -1,0 +1,17 @@
+﻿tabela,chave,campo
+dotacoes,333,atualizado
+dotacoes,333,liquidado
+dotacoes,333,n_suplementacoes
+dotacoes,335,atualizado
+dotacoes,335,n_suplementacoes
+dotacoes,336,atualizado
+dotacoes,336,liquidado
+dotacoes,336,n_suplementacoes
+dotacoes,345,atualizado
+dotacoes,345,liquidado
+dotacoes,345,n_suplementacoes
+dotacoes,346,atualizado
+dotacoes,346,liquidado
+dotacoes,346,n_suplementacoes
+liquidacoes,"(9343, '8580')",data
+empenhos,9229,dotacao_sem_vinculo

@@ -1,0 +1,27 @@
+﻿variavel,n,W,p_valor,leitura_5pct,contagem_discreta
+participacao_liquidada,28,0.6928393730007654,2.2607231232894205e-06,Rejeita normalidade,False
+dotacao_inicial,28,0.6857751523495474,1.8049561561150358e-06,Rejeita normalidade,False
+n_dotacoes,28,0.7355058369590666,9.43132986580119e-06,Rejeita normalidade,True
+n_programas,28,0.8224347768771124,0.0002725734568551458,Rejeita normalidade,True
+n_acoes,28,0.753565085278629,1.7954389824438752e-05,Rejeita normalidade,True
+n_unidades,28,0.7164675256024055,4.911111851400958e-06,Rejeita normalidade,True
+n_subfuncoes,28,0.8487639041918436,0.0008827126983461062,Rejeita normalidade,True
+n_entidades,28,0.7406684131996502,1.1308085531997035e-05,Rejeita normalidade,True
+n_naturezas,28,0.8532669256100724,0.0010888500401741576,Rejeita normalidade,True
+hhi_orcamento_acoes,28,0.849548545353622,0.0009154121079900727,Rejeita normalidade,False
+perc_orcamento_pessoal,28,0.7853203021154804,5.9465143576221476e-05,Rejeita normalidade,False
+perc_orcamento_capital,28,0.8666675455436482,0.0020674169764946255,Rejeita normalidade,False
+perc_orcamento_transferencias,28,0.5688639438869119,6.32283420909504e-08,Rejeita normalidade,False
+n_fontes_orcamentarias,28,0.9045256462097993,0.01462662680247487,Rejeita normalidade,True
+n_suplementacoes,28,0.7898613594274053,7.1101936758922e-05,Rejeita normalidade,True
+taxa_alteracao_orcamento,28,0.9166871603290798,0.028747526225936123,Rejeita normalidade,False
+n_empenhos,28,0.6217931992585766,2.662247587766929e-07,Rejeita normalidade,True
+n_credores,28,0.760858553981442,2.3457463740379437e-05,Rejeita normalidade,True
+n_recursos_empenhos,28,0.8775009087475246,0.0035383136938632533,Rejeita normalidade,True
+n_liquidacoes,28,0.64599064019567,5.355408926331992e-07,Rejeita normalidade,True
+mediana_valor_empenho,28,0.3025453863455903,1.7566980529069524e-10,Rejeita normalidade,False
+perc_empenhos_folha,28,0.8467901095490575,0.0008058197332295007,Rejeita normalidade,False
+perc_empenhos_processo,28,0.9063382782702615,0.016153453609156168,Rejeita normalidade,False
+perc_empenhos_ordinarios,28,0.8816866170666774,0.004375426769094887,Rejeita normalidade,False
+prazo_liquidacao_mediano,28,0.6882682286808335,1.9535566399256297e-06,Rejeita normalidade,False
+perc_empenhos_ultimo_trimestre,28,0.9192044078084024,0.033152050343412946,Rejeita normalidade,False
